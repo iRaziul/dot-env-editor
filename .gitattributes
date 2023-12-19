@@ -1,0 +1,8 @@
+* text=auto eol=lf
+
+*.md diff=markdown
+*.php diff=php
+
+/.github export-ignore
+CHANGELOG.md export-ignore
+.styleci.yml export-ignore

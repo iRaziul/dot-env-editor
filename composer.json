@@ -1,0 +1,24 @@
+{
+    "name": "digimax/dot-env-editor",
+    "description": "Super simple PHP package for updating .env files",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Raziul Islam",
+            "email": "raziul.dev@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Raziul\\DotEnvEditor\\": "src/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}
