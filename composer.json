@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Raziul\\DotEnvEditor\\": "src/"
+            "Digimax\\DotEnvEditor\\": "src/"
         }
     },
     "config": {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Raziul\DotEnvEditor;
+namespace Digimax\DotEnvEditor;
 
 /**
  * DotEnvEditor class

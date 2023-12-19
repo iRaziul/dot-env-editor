@@ -31,7 +31,7 @@ composer require digimax/dot-env-editor
 ## Usage
 
 ```php
-use Raziul\DotEnvEditor\DotEnvEditor;
+use Digimax\DotEnvEditor\DotEnvEditor;
 
 $envPath = __DIR__ . '/.env';
 
