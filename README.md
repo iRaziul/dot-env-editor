@@ -2,7 +2,12 @@
 
 A robust PHP package designed to simplify the management and manipulation of .env files within your projects. Effortlessly read, write, update, and delete environment variables with ease.
 
-## Features
+![Dot-env-editor](https://repository-images.githubusercontent.com/733602796/d2a2796a-569e-4b89-a2da-bac4b14ed849)
+
+> [!IMPORTANT]  
+> If you are looking to load/read environment variables then we highly recommend you [vlucas/phpdotenv](https://github.com/vlucas/phpdotenv).
+
+## Features 🔥
 
 -   Effortlessly load and parse .env files
 -   Get, set, and remove environment variables
@@ -10,9 +15,9 @@ A robust PHP package designed to simplify the management and manipulation of .en
 -   Ability to update existing vars or add new ones
 -   Optionally keep backups of .env files before writing
 -   Helper methods like `only()` to get subset of variables
--   Simple chaining methods for fluent interface
+-   Simple chaining methods for a fluent interface
 -   Handles formatting values like booleans and strings
--   Preserves spacing and comments when writing back to file
+-   Preserves spacing and comments when writing back to the file
 -   Compatible with various frameworks and environments, ensuring versatility in usage.
 -   Built for PHP 8+ with strict typing
 
@@ -68,7 +73,7 @@ $editor->remove('AUTHOR_URL');
 $editor->write();
 ```
 
-### You can use chaining methods for fluent interface 😘
+### You can use chaining methods for a fluent interface 😘
 
 ```php
 DotEnvEditor::load($envPath, true)
@@ -81,7 +86,7 @@ DotEnvEditor::load($envPath, true)
     ->write();
 ```
 
-## Finding this package useful?
+## Do you find this package useful?
 
 If this package has helped to simplify your workflow, consider giving it a ⭐️ on GitHub. Your support encourages further development and improvements! 💖
 
