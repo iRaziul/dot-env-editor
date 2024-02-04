@@ -199,7 +199,10 @@ class DotEnvEditor
             return;
         }
 
-        $backups = glob($this->backupDir().'/*');
+        $backups = array_filter(
+            glob($this->backupDir().'/{,.}*', GLOB_BRACE),
+            'is_file'
+        );
 
         if (count($backups) < $this->backupCount) {
             return;
@@ -209,7 +212,7 @@ class DotEnvEditor
         usort($backups, fn ($a, $b) => filemtime($b) - filemtime($a));
 
         // keep latest backups
-        array_splice($backups, $this->backupCount);
+        array_splice($backups, 0, $this->backupCount);
 
         foreach ($backups as $backup) {
             unlink($backup);
