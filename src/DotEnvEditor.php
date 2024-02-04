@@ -122,7 +122,7 @@ class DotEnvEditor
     /**
      * Set an environment variable or an array of environment variables
      */
-    public function set(string|array $key, string $value = null)
+    public function set(string|array $key, mixed $value = null)
     {
         if (is_array($key)) {
             foreach ($key as $k => $v) {
@@ -130,10 +130,6 @@ class DotEnvEditor
             }
 
             return $this;
-        }
-
-        if (is_string($value) && str_contains($value, ' ')) {
-            $value = '"'.$value.'"';
         }
 
         $this->newEnv[str_replace('.', '_', strtoupper($key))] = $value;
@@ -151,6 +147,8 @@ class DotEnvEditor
 
         // get keys for replacing and appending
         foreach ($this->newEnv as $key => $value) {
+            $value = $this->castValue($value);
+
             if (array_key_exists($key, $this->env)) {
                 $replace[$key.'='.$this->env[$key]] = $key.'='.$value;
             } else {
@@ -171,6 +169,29 @@ class DotEnvEditor
         $this->keepBackup();
 
         return file_put_contents($this->envFilePath, $env) !== false;
+    }
+
+    /**
+     * Cast the value appropriately
+     */
+    private function castValue(mixed $value): string
+    {
+        if (is_bool($value)) {
+            return $value ? 'true' : 'false';
+        }
+
+        if (is_null($value)) {
+            return '';
+        }
+
+        if (is_string($value) && (
+            str_contains($value, ' ')
+            || str_starts_with($value, '${') && str_ends_with($value, '}')
+        )) {
+            return '"'.$value.'"';
+        }
+
+        return $value;
     }
 
     /**
