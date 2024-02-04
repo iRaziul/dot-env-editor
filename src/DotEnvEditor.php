@@ -19,6 +19,8 @@ class DotEnvEditor
 
     protected ?string $backupDirectory = null;
 
+    protected int $backupCount = 5;
+
     /**
      * DotEnvEditor constructor.
      *
@@ -47,6 +49,29 @@ class DotEnvEditor
         }
 
         $this->backupDirectory = $dir;
+
+        return $this;
+    }
+
+    /**
+     * Path to the backup directory
+     */
+    public function backupDir(): string
+    {
+        if ($this->backupDirectory) {
+            return rtrim($this->backupDirectory, '/');
+        }
+
+        // default to the same directory as the .env file
+        return dirname($this->envFilePath);
+    }
+
+    /**
+     * Set the number of backups to keep
+     */
+    public function setBackupCount(int $count): self
+    {
+        $this->backupCount = $count;
 
         return $this;
     }
@@ -166,6 +191,32 @@ class DotEnvEditor
     }
 
     /**
+     * Clear old backups
+     */
+    public function clearOldBackups(): void
+    {
+        if (! $this->backupDirectory) {
+            return;
+        }
+
+        $backups = glob($this->backupDir().'/*');
+
+        if (count($backups) < $this->backupCount) {
+            return;
+        }
+
+        // sort by last modified
+        usort($backups, fn ($a, $b) => filemtime($b) - filemtime($a));
+
+        // keep latest backups
+        array_splice($backups, $this->backupCount);
+
+        foreach ($backups as $backup) {
+            unlink($backup);
+        }
+    }
+
+    /**
      * Keep a backup of the .env file
      */
     private function keepBackup(): void
@@ -174,15 +225,15 @@ class DotEnvEditor
             return;
         }
 
-        if (! $this->backupDirectory) {
-            $path = $this->envFilePath;
-        } else {
-            $path = rtrim($this->backupDirectory, '/').'/'.basename($this->envFilePath);
-        }
-
-        copy(
-            $this->envFilePath,
-            $path.'.'.date('Y-m-d-H-i-s')
+        $path = sprintf(
+            '%s/%s.%s',
+            $this->backupDir(),
+            basename($this->envFilePath),
+            date('Y-m-d-H-i-s')
         );
+
+        copy($this->envFilePath, $path);
+
+        $this->clearOldBackups();
     }
 }
