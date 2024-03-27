@@ -86,6 +86,40 @@ DotEnvEditor::load($envPath, true)
     ->write();
 ```
 
+## Usage with Laravel 🔥
+
+In your `AppServiceProvider`, register DotEnvEditor as a singleton:
+
+```php
+use Digimax\DotEnvEditor\DotEnvEditor;
+
+public function register(): void
+{
+    $this->app->singleton(DotEnvEditor::class, function () {
+        return DotEnvEditor::load(base_path('.env'))
+            ->setBackupDir(storage_path('env-backups')) // backup directory
+            ->setBackupCount(5); // only keep latest 5 backup
+    });
+}
+```
+
+In your controller, you can inject the `DotEnvEditor` instance and use it to update environment variables:
+
+```php
+public function update(DotEnvEditor $envEditor)
+{
+    // Perform form/data validation
+
+    // save the changes
+    $envEditor
+        ->set([
+            'AUTHOR_URL' => 'https://raziul.dev',
+            'AUTHOR_COUNTRY' => 'Bangladesh',
+        ])
+        ->write();
+}
+```
+
 ## Do you find this package useful?
 
 If this package has helped to simplify your workflow, consider giving it a ⭐️ on GitHub. Your support encourages further development and improvements! 💖
