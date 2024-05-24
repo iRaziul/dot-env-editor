@@ -126,7 +126,7 @@ If this package has helped to simplify your workflow, consider giving it a ‚≠êÔ∏
 
 ## Support
 
-For support, please open an [issue on GitHb](https://github.com/Digimax-IT/dot-env-editor/issues) or submit a [pull request](https://github.com/Digimax-IT/dot-env-editor/pulls).
+For support, please open an [issue on GitHb](https://github.com/iRaziul/dot-env-editor/issues) or submit a [pull request](https://github.com/iRaziul/dot-env-editor/pulls).
 
 ## License
 
