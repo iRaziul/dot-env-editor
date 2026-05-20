@@ -1,6 +1,6 @@
 <?php
 
-namespace Digimax\DotEnvEditor;
+namespace Larament\DotEnvEditor;
 
 /**
  * DotEnvEditor class
@@ -16,6 +16,8 @@ class DotEnvEditor
     protected array $env = [];
 
     protected array $newEnv = [];
+
+    protected array $removedEnv = [];
 
     protected ?string $backupDirectory = null;
 
@@ -113,8 +115,10 @@ class DotEnvEditor
      */
     public function remove(string $key): self
     {
-        unset($this->newEnv[str_replace('.', '_', strtoupper($key))]);
-        unset($this->env[str_replace('.', '_', strtoupper($key))]);
+        $cleanKey = str_replace('.', '_', strtoupper($key));
+        $this->removedEnv[$cleanKey] = true;
+        unset($this->newEnv[$cleanKey]);
+        unset($this->env[$cleanKey]);
 
         return $this;
     }
@@ -142,31 +146,36 @@ class DotEnvEditor
      */
     public function write(): bool
     {
-        $replace = [];
+        $env = $this->envRawData;
+
+        // Remove keys
+        foreach ($this->removedEnv as $key => $true) {
+            $escapedKey = preg_quote($key, '/');
+            $env = preg_replace("/^{$escapedKey}=.*\r?\n?/m", "", $env);
+        }
+
         $append = [];
 
-        // get keys for replacing and appending
         foreach ($this->newEnv as $key => $value) {
             $value = $this->castValue($value);
 
             if (array_key_exists($key, $this->env)) {
-                $replace[$key.'='.$this->env[$key]] = $key.'='.$value;
+                $escapedKey = preg_quote($key, '/');
+                $env = preg_replace("/^{$escapedKey}=.*/m", "{$key}={$value}", $env);
             } else {
                 $append[] = $key.'='.$value;
             }
         }
 
-        $env = str_replace(
-            array_keys($replace),
-            array_values($replace),
-            $this->envRawData
-        );
-
         if ($append) {
-            $env .= "\n".implode("\n", $append)."\n";
+            if (! empty($env) && ! str_ends_with($env, "\n")) {
+                $env .= "\n";
+            }
+            $env .= implode("\n", $append)."\n";
         }
 
         $this->keepBackup();
+        $this->removedEnv = [];
 
         return file_put_contents($this->envFilePath, $env) !== false;
     }
@@ -201,6 +210,7 @@ class DotEnvEditor
     {
         $env = [];
         foreach (explode("\n", $rawData) as $line) {
+            $line = rtrim($line, "\r");
             if (str_starts_with($line, '#') || empty($line)) {
                 continue;
             }
@@ -249,11 +259,13 @@ class DotEnvEditor
             return;
         }
 
+        $microtime = explode(' ', microtime());
+        $micro = substr($microtime[0], 2, 6);
         $path = sprintf(
             '%s/%s.%s',
             $this->backupDir(),
             basename($this->envFilePath),
-            date('Y-m-d-H-i-s')
+            date('Y-m-d-H-i-s', $microtime[1]) . '-' . $micro
         );
 
         copy($this->envFilePath, $path);

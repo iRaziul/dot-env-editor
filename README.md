@@ -4,6 +4,9 @@ A robust PHP package designed to simplify the management and manipulation of .en
 
 ![Dot-env-editor](https://repository-images.githubusercontent.com/733602796/d2a2796a-569e-4b89-a2da-bac4b14ed849)
 
+> [!NOTE]
+> **Package Renamed:** This package has been renamed from `digimax/dot-env-editor` to `larament/dot-env-editor`.
+
 > [!IMPORTANT]  
 > If you are looking to load/read environment variables then we highly recommend you [vlucas/phpdotenv](https://github.com/vlucas/phpdotenv).
 
@@ -30,13 +33,13 @@ A robust PHP package designed to simplify the management and manipulation of .en
 Install via Composer:
 
 ```sh
-composer require digimax/dot-env-editor
+composer require larament/dot-env-editor
 ```
 
 ## Usage
 
 ```php
-use Digimax\DotEnvEditor\DotEnvEditor;
+use Larament\DotEnvEditor\DotEnvEditor;
 
 $envPath = __DIR__ . '/.env';
 
@@ -86,12 +89,22 @@ DotEnvEditor::load($envPath, true)
     ->write();
 ```
 
+### Dot-Notation & Flat Nesting Support 💡
+
+When using dot-notation keys, they are automatically flattened and converted to standard uppercase `snake_case` variables. For example:
+- `DB_CONNECTION.host` is converted to `DB_CONNECTION_HOST`
+- `app.url` is converted to `APP_URL`
+
+```php
+$editor->set('DB_CONNECTION.host', '127.0.0.1'); // Writes DB_CONNECTION_HOST=127.0.0.1
+```
+
 ## Usage with Laravel 🔥
 
 In your `AppServiceProvider`, register DotEnvEditor as a singleton:
 
 ```php
-use Digimax\DotEnvEditor\DotEnvEditor;
+use Larament\DotEnvEditor\DotEnvEditor;
 
 public function register(): void
 {
