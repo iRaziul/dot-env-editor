@@ -4,29 +4,26 @@ A robust PHP package designed to simplify the management and manipulation of .en
 
 ![Dot-env-editor](https://repository-images.githubusercontent.com/733602796/d2a2796a-569e-4b89-a2da-bac4b14ed849)
 
-> [!NOTE]
-> **Package Renamed:** This package has been renamed from `digimax/dot-env-editor` to `larament/dot-env-editor`.
-
 > [!IMPORTANT]  
 > If you are looking to load/read environment variables then we highly recommend you [vlucas/phpdotenv](https://github.com/vlucas/phpdotenv).
 
 ## Features 🔥
 
--   Effortlessly load and parse .env files
--   Get, set, and remove environment variables
--   Support for nesting env vars (e.g. DB_CONNECTION.host)
--   Ability to update existing vars or add new ones
--   Optionally keep backups of .env files before writing
--   Helper methods like `only()` to get subset of variables
--   Simple chaining methods for a fluent interface
--   Handles formatting values like booleans and strings
--   Preserves spacing and comments when writing back to the file
--   Compatible with various frameworks and environments, ensuring versatility in usage.
--   Built for PHP 8+ with strict typing
+- Effortlessly load and parse .env files
+- Get, set, and remove environment variables
+- Support for nesting env vars (e.g. DB_CONNECTION.host)
+- Ability to update existing vars or add new ones
+- Optionally keep backups of .env files before writing
+- Helper methods like `only()` to get subset of variables
+- Simple chaining methods for a fluent interface
+- Handles formatting values like booleans and strings
+- Preserves spacing and comments when writing back to the file
+- Compatible with various frameworks and environments, ensuring versatility in usage.
+- Built for PHP 8+ with strict typing
 
 ## Requirements
 
--   PHP 8.1 or higher
+- PHP 8.1 or higher
 
 ## Installation
 
@@ -92,6 +89,7 @@ DotEnvEditor::load($envPath, true)
 ### Dot-Notation & Flat Nesting Support 💡
 
 When using dot-notation keys, they are automatically flattened and converted to standard uppercase `snake_case` variables. For example:
+
 - `DB_CONNECTION.host` is converted to `DB_CONNECTION_HOST`
 - `app.url` is converted to `APP_URL`
 
